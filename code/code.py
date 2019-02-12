@@ -8,10 +8,8 @@
 # from __future__ import print_function
 import ure, sys
 from io import StringIO
-import sys
-
+import os
 import gc
-print(gc.mem_free())
 
 class Symbol(str): pass
 
@@ -163,7 +161,7 @@ class Env(object):
         elif self.outer is None:
             # print('Actually: {0}'.format(str(var) in self.keys()))
             # print("Couldn't find env for '{0}'".format(var))
-            raise LookupError(var)
+            raise LookupError(str(var))
         else: return self.outer.find(var)
 
 def is_pair(x): return x != [] and isa(x, list)
