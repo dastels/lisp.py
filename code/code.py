@@ -437,10 +437,30 @@ def i2c_write(device, data):
     device.write(bytes(data))
 
 
-hardware_defs = {
+def execfile(f):
+    exec(open(f).read())
+
+def load_device(device_driver_name):
+    py_name = './devices/{0}.py'.format(device_driver_name)
+    try:
+        execfile(py_name)
+        print('Loaded {0}'.format(py_name))
+    except OSError:
+        print('No file: {0}'.format(py_name))
+
+    try:
+        scm_name = './devices/{0}.scm'.format(device_driver_name)
+        load(scm_name)
+        print('Loaded {0}'.format(scm_name))
+    except OSError:
+        print('No file: {0}'.format(scm_name))
+
+global_env.storage.update({
+    'load-device':load_device,
     'board-pins':get_board_pins,
     'board':get_pin,
     'digital-pin':make_digital_pin,
+    'analog-pin':make_analog_pin,
     '**INPUT**':digitalio.Direction.INPUT,
     '**OUTPUT**':digitalio.Direction.OUTPUT,
     '**PULLUP**':digitalio.Pull.UP,
@@ -448,17 +468,13 @@ hardware_defs = {
     'pin-value':get_pin_value,
     'pin-value!':set_pin_value,
 
-    'analog-pin':make_analog_pin,
-
     'i2c':i2c_bus,
     'i2c-device':i2c_device,
     'i2c-read':i2c_read,
     'i2c-write':i2c_write,
 
     'sleep':time.sleep
-    }
-global_env.storage.update(hardware_defs)
-
+    })
 
 print('Lisp loaded, free mem: {0}'.format(gc.mem_free()))
 
