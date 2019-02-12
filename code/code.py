@@ -362,6 +362,12 @@ eval(parse("""(begin
        (if (= (length args) 1) (car args)
            `(if (not ,(car args)) (or ,@(cdr args)) #t)))))
 
+(define-macro when (lambda args
+  `(if ,(car args) (begin ,@(cdr args)))))
+
+(define-macro unless (lambda args
+  `(if (not ,(car args)) (begin ,@(cdr args)))))
+
 ;; More macros can also go here
 
 )"""))
