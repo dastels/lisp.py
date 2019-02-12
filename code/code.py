@@ -460,8 +460,8 @@ hardware_defs = {
 global_env.storage.update(hardware_defs)
 
 
-print(gc.mem_free())
+print('Lisp loaded, free mem: {0}'.format(gc.mem_free()))
 
 if __name__ == '__main__':
-    sys.stderr.write("Lispy version 2.0\n")
+    sys.stderr.write("Lispy version 2.0 for CircuitPython\n")
     repl()
