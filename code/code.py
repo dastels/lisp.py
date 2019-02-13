@@ -422,24 +422,19 @@ def i2c_device(i2c, address):
 
 
 
-
 def execfile(f):
     exec(open(f).read())
 
 def load_device(device_driver_name):
-    py_name = './devices/{0}.py'.format(device_driver_name)
     try:
-        execfile(py_name)
-        print('Loaded {0}'.format(py_name))
+        execfile('./devices/{0}.py'.format(device_driver_name))
     except OSError:
-        print('No file: {0}'.format(py_name))
+        pass
 
     try:
-        scm_name = './devices/{0}.scm'.format(device_driver_name)
-        load(scm_name)
-        print('Loaded {0}'.format(scm_name))
+        load('./devices/{0}.scm'.format(device_driver_name))
     except OSError:
-        print('No file: {0}'.format(scm_name))
+        pass
 
 global_env.storage.update({
     'load-device':load_device,
