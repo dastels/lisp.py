@@ -9,7 +9,6 @@ def si7021_relative_humidity(device):
 def si7021_temperature(device):
     return device.temperature
 
-
 global_env.storage.update({
     'make-si7021':make_si7021,
     'si7021-relative-humidity':si7021_relative_humidity,
