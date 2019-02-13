@@ -420,21 +420,7 @@ def i2c_bus(scl, sda):
 def i2c_device(i2c, address):
     return I2CDevice(i2c, address)
 
-def i2c_read(device, how_much):
-    data = bytearray(how_much)
-    while True:
-        try:
-            with device as i2c:
-                i2c.readinto(data)
-        except OSError:
-            pass
-        else:
-            if data[0] != 0xff: # Check if read succeeded.
-                break
-    return list(data)
 
-def i2c_write(device, data):
-    device.write(bytes(data))
 
 
 def execfile(f):
@@ -469,9 +455,6 @@ global_env.storage.update({
     'pin-value!':set_pin_value,
 
     'i2c':i2c_bus,
-    'i2c-device':i2c_device,
-    'i2c-read':i2c_read,
-    'i2c-write':i2c_write,
 
     'sleep':time.sleep
     })
