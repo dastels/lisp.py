@@ -458,4 +458,10 @@ print('Lisp loaded, free mem: {0}'.format(gc.mem_free()))
 
 if __name__ == '__main__':
     sys.stderr.write("Lispy version 2.0 for CircuitPython\n")
+
+    try:
+        load("code")
+    except OSError:
+        pass
+
     repl()
