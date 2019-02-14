@@ -1,6 +1,17 @@
-################ Scheme Interpreter in Python
+"""
+Scheme Interpreter in CircuitPython
+Based on Lispy.py (c) Peter Norvig, 2010; See http://norvig.com/lispy2.html
 
-## (c) Peter Norvig, 2010; See http://norvig.com/lispy2.html
+Adafruit invests time and resources providing this open source code.
+Please support Adafruit and open source hardware by purchasing
+products from Adafruit!
+
+Written by Dave Astels for Adafruit Industries
+Copyright (c) 2019 Adafruit Industries
+Licensed under the MIT license.
+
+All text above must be included in any redistribution.
+"""
 
 ################ Symbol, Procedure, classes
 
@@ -119,7 +130,7 @@ def load(filename):
         filename = filename + '.scm'
     repl(None, InPort(open(filename)), None)
 
-def repl(prompt='lispy> ', inport=InPort(sys.stdin), out=sys.stdout):
+def repl(prompt='==> ', inport=InPort(sys.stdin), out=sys.stdout):
     "A prompt-read-eval-print loop."
     while True:
         try:
@@ -454,10 +465,9 @@ global_env.storage.update({
     'sleep':time.sleep
     })
 
-print('Lisp loaded, free mem: {0}'.format(gc.mem_free()))
 
 if __name__ == '__main__':
-    sys.stderr.write("Lispy version 2.0 for CircuitPython\n")
+    print('CircuitScheme version 1.0: {0} bytes free.\n'.format(gc.mem_free()))
 
     try:
         load("code")
