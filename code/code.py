@@ -38,10 +38,8 @@ _quasiquote, _unquote, _unquotesplicing = map(Sym,
 class Procedure(object):
     "A user-defined Scheme procedure."
     def __init__(self, parms, exp, env):
-#        print('Creating a Procedure')
         self.parms, self.exp, self.env = parms, exp, env
     def __call__(self, *args):
-#        print('Calling with {0}'.format(args))
         return eval(self.exp, Env(self.parms, args, self.env))
 
 ################ parse, read, and user interaction
@@ -70,7 +68,6 @@ class InPort(object):
             token = m.group(1)
             self.line = m.group(2)
             if token != '' and not token.startswith(';'):
-#                print('Token: <{0}> Remainder: <{1}>'.format(token, self.line))
                 return token
 
 def readchar(inport):
@@ -89,7 +86,6 @@ def read(inport):
             while True:
                 token = inport.next_token()
                 if token == ')':
-                    # print('Parsed list: {0}'.format(L))
                     return L
                 else: L.append(read_ahead(token))
         elif ')' == token: raise SyntaxError('unexpected )')
@@ -136,11 +132,9 @@ def repl(prompt='==> ', inport=InPort(sys.stdin), out=sys.stdout):
         try:
             if prompt: sys.stderr.write(prompt)
             x = parse(inport)
-            # print('Parsed: {0}'.format(x))
             if x is eof_object: return
             val = eval(x)
             if val is not None and out:
-                # print('Result: {0}'.format(val))
                 print(to_string(val))
         except Exception as e:
             sys.print_exception(e)
@@ -152,7 +146,6 @@ class Env(object):
     def __init__(self, parms=(), args=(), outer=None):
         # Bind parm list to corresponding args, or single parm to list of args
         self.storage = {}
-        # print('New ENV with {0} {1}'.format(parms, args))
         self.outer = outer
         if isa(parms, Symbol):
             self.storage.update({str(parms):list(args)})
@@ -163,15 +156,11 @@ class Env(object):
             try:
                 self.storage.update(zip([str(p) for p in parms],args))
             except TypeError as e:
-#                print("Type error: {0}".format(str(e)))
                 sys.print_exception(e)
     def find(self, var):
         "Find the innermost Env where var appears."
-        # print('\nLooking for {0} of type {1} in {2}'.format(var, type(var), ['{0} {1}'.format(x, type(x)) for x in sorted(self.storage.keys())]))
         if str(var) in self.storage: return self
         elif self.outer is None:
-            # print('Actually: {0}'.format(str(var) in self.keys()))
-            # print("Couldn't find env for '{0}'".format(var))
             raise LookupError(str(var))
         else: return self.outer.find(var)
 
@@ -228,7 +217,6 @@ def eval(x, env=global_env):
         if isa(x, Symbol):       # variable reference
             return env.find(str(x)).storage[str(x)]
         elif not isa(x, list):   # constant literal
-#            print('Returning {0}'.format(x))
             return x
         elif x[0] is _quote:     # (quote exp)
             (_, exp) = x
@@ -260,7 +248,6 @@ def eval(x, env=global_env):
             x = x[-1]
         else:                    # (proc exp*)
             exps = [eval(exp, env) for exp in x]
-#            print('Calling {0}'.format(str(x[0])))
             proc = exps.pop(0)
             if isa(proc, Procedure):
                 x = proc.exp
